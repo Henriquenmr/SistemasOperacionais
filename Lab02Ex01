@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *arquivo;
+    char buffer[1000];
+
+    arquivo = fopen("lab2_ex1.txt", "r");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return 1;
+    }
+
+    while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
+        printf("%s", buffer);
+    }
+
+    fclose(arquivo);
+
+    return 0;
+}
