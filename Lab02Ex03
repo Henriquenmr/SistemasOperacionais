@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main() {
+    int arquivo_origem, arquivo_destino;
+    char buffer[128];
+    ssize_t bytes_lidos, bytes_escritos;
+
+    arquivo_origem = open("lab2_ex3_origem.txt", O_RDONLY);
+    if (arquivo_origem == -1) {
+        perror("Erro na abertura do arquivo de origem");
+        return 1;
+    }
+
+    arquivo_destino = open("lab2_ex3_destino.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (arquivo_destino == -1) {
+        perror("Erro na abertura do arquivo de destino");
+        close(arquivo_origem);
+        return 1;
+    }
+
+    while ((bytes_lidos = read(arquivo_origem, buffer, sizeof(buffer))) > 0) {
+        bytes_escritos = write(arquivo_destino, buffer, bytes_lidos);
+        if (bytes_escritos != bytes_lidos) {
+            perror("Erro ao escrever no arquivo de destino");
+            close(arquivo_origem);
+            close(arquivo_destino);
+            return 1;
+        }
+    }
+
+    if (bytes_lidos == -1) {
+        perror("Erro na leitura do arquivo de origem");
+    }
+
+    close(arquivo_origem);
+    close(arquivo_destino);
+
+    return 0;
+}
+Esse có
