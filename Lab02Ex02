@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *arquivo;
+    char buffer[128];
+    int contador_linhas = 0;
+    int i;
+
+    arquivo = fopen("lab2_ex2.txt", "r");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return 1;
+    }
+
+    while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
+        for (i = 0; buffer[i] != '\0'; i++) {
+            if (buffer[i] == '\n') {
+                contador_linhas++;
+            }
+        }
+    }
+
+    printf("Número total de linhas: %d\n", contador_linhas);
+
+    fclose(arquivo);
+
+    return 0;
+}
