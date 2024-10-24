@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct reg {
+    int conteudo;
+    struct reg *prox;
+};
+typedef struct reg celula;
+
+void criarLista(celula **lista) {
+    *lista = (celula *)malloc(sizeof(celula));
+    (*lista)->conteudo = 10;
+    (*lista)->prox = (celula *)malloc(sizeof(celula));
+    (*lista)->prox->conteudo = 20;
+    (*lista)->prox->prox = (celula *)malloc(sizeof(celula));
+    (*lista)->prox->prox->conteudo = 30;
+    (*lista)->prox->prox->prox = NULL;
+}
+
+void imprimirLista(celula *lista) {
+    celula *temp = lista;
+    while (temp != NULL) {
+        printf("Valor: %d\n", temp->conteudo);
+        temp = temp->prox;
+    }
+}
+
+void removerLista(celula **lista) {
+    celula *temp;
+    while (*lista != NULL) {
+        temp = *lista;
+        *lista = (*lista)->prox;
+        free(temp);
+    }
+}
+
+void calcularTamanhoCelula() {
+    printf("Tamanho de cada célula: %lu bytes\n", sizeof(celula));
+}
+
+void calcularMaximoElementos() {
+    unsigned long memoriaDisponivel = 1L * 1024 * 1024 * 1024; // 1 GB
+    unsigned long tamanhoCelula = sizeof(celula);
+    unsigned long maxElementos = memoriaDisponivel / tamanhoCelula;
+    printf("Máximo de elementos possíveis: %lu\n", maxElementos);
+}
+
+int main() {
+    celula *lista = NULL;
+    criarLista(&lista);
+
+    printf("Valores na lista:\n");
+    imprimirLista(lista);
+
+    calcularTamanhoCelula();
+    calcularMaximoElementos();
+
+    removerLista(&lista);
+
+    return 0;
+}
